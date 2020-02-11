@@ -1,0 +1,28 @@
+---
+title: "HW 6"
+author: "Zoheb Khaliqi"
+date: "1/23/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+pd_interaction <- function(code) {
+  s <- read.pdb(code) 
+  s.chainA <- trim.pdb(s, chain="A", elety="CA")
+  s.b <- s.chainA$atom$b
+  plotb3(s.b, typ="l", ylab="Bfactor")
+
+}
+```
+  #function input is the 4 letter code of the protein drug interaction desired
+  #the function reads the PDB, trims it and then plots the drug protein interaction
+  #the output of the function is the graph of the protein drug interaction 
+
+
+```{r}
+pd_interaction("4AKE")
+```
+
+

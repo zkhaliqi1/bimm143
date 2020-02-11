@@ -1,0 +1,29 @@
+---
+title: "HW_6"
+author: "Zoheb Khaliqi"
+date: "1/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(bio3d)
+pd_interaction <- function(code) {
+  s <- read.pdb(code) 
+  s.chainA <- trim.pdb(s, chain="A", elety="CA")
+  s.b <- s.chainA$atom$b
+  plotb3(s.b, sse=s.chainA, typ="l", ylab="Bfactor")
+
+}
+```
+
+```{r}
+pd_interaction("4AKE")
+pd_interaction("1AKE")
+pd_interaction("1E4Y")
+```
+
+
