@@ -66,7 +66,6 @@ round(apply(wisc.data, 2, sd), 2)
 ```
 
 
-
 Looks like we need to set scale=TRUE!!
 
 ```{r}
