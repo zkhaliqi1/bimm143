@@ -2,7 +2,7 @@
 title: "class10"
 author: "Zoheb Khaliqi"
 date: "2/6/2020"
-output: pdf_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
