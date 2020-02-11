@@ -1,0 +1,133 @@
+---
+title: "class07"
+author: "Zoheb Khaliqi"
+date: "1/28/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+These are functions here, look here
+```{r}
+#Functions
+
+is_both_na <- function(x,y) {
+  if(length(x) != length(y)) {
+    stop("your inputs aren't the same length")
+  }
+  is.na(x) & is.na(y)
+}
+
+rescale_new <- function(x, y) {
+  ## Print some info on where NA's are as well as the number of them 
+  if(length(x) != length(y)) {
+    stop("Input x and y should be vectors of the same length", call.=FALSE)
+  }
+  na.in.both <- ( is.na(x) & is.na(y) )
+  na.number  <- sum(na.in.both)
+  na.which   <- which(na.in.both)
+
+  message("Found ", na.number, " NA's at position(s):", 
+          paste(na.which, collapse=", ") ) 
+  
+  return( list(number=na.number, which=na.which) )
+}
+
+
+
+rescale <- function(x, na.rm=TRUE, plot=FALSE, ...) {
+  # Our rescale function from the end of lecture 6
+  if( !is.numeric(x) ) {
+    stop("Input x should be numeric", call.=FALSE)
+  }
+
+  if(na.rm) {
+    rng <-range(x, na.rm=TRUE)
+  } else {
+    rng <-range(x)
+  }
+
+  answer <- (x - rng[1]) / (rng[2] - rng[1])
+  if(plot) { 
+    plot(answer, ...) 
+  }
+
+  return(answer)
+}
+```
+
+```{r}
+x <- c(1, 2, NA, 3, NA)
+y <- c(NA, 3, NA, 3, 4)
+z <- c(1,1)
+is_both_na(x,z)
+```
+
+
+
+```{r}
+x <- df1$IDs
+y <- df2$IDs
+
+intersect(x,y) #See where both share same 
+
+x %in% y #Takes all of x and looks at which elements of x are in y
+x #Way to subset
+x[x %in% y] #Allows to show which elements they intersect at (specific); just taking the TRUE
+
+y
+y%in%x
+y[y%in%x] #Same but with respect to y
+
+cbind(x[x %in% y], y[y%in%x]) #Binds the vectors together; can use to make a function
+```
+
+
+```{r}
+gene_intersect <- function(x, y) {
+  cbind(x[x %in% y], y[y%in%x])
+}
+
+gene_intersect2 <- function(df1, df2) { #Want to switch the x and y for df's
+  cbind(df1[df1$IDs %in% df2$IDs, ], #Know to sub because that's what x and y was defined as
+        df2[df2$IDs%in%df1$IDs, ], "exp") #Want to use IDs to find expression data with it
+} #Empty comma space subsets off FALSE TRUE TRUE 
+
+gene_intersect3 <- function(df1, df2, gene.colname="IDs") { 
+  cbind( df1[ df1[,gene.colname] %in% df2[,gene.colname], ], 
+          df2[ df2[,gene.colname] %in% df1[,gene.colname],], "exp" )
+}
+
+gene_intersect4 <- function(df1, df2, gene.colname="IDs") { 
+  
+  df1.name <- df1[,gene.colname]
+  df2.name <- df2[,gene.colname]
+  
+  df1.inds <- df1.name %in% df2.name
+  df2.inds <- df2.name %in% df1.name
+  
+  cbind( df1[ df1.inds, ], #Returns a name
+          df2[ df2.inds,], "exp" )
+}
+gene_intersect4(df1, df2, gene.colname = "newname")
+
+df1$IDs
+#df1[,"IDs"]
+gene.colname = "IDs"
+df1[,gene.colname]
+
+colnames(df1) <- c("newname", "exp")
+df1
+colnames(df2) <- c("newname", "exp")
+
+x <- df1$IDs #function depending on us naming the df's
+y <- df2$IDs
+gene_intersect(x,y)
+
+gene_intersect2(df1,df2)
+
+gene_intersect3()
+```
+
