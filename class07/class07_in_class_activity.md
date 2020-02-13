@@ -1,16 +1,11 @@
----
-title: "class07"
-author: "Zoheb Khaliqi"
-date: "1/28/2020"
-output: github_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+class07
+================
+Zoheb Khaliqi
+1/28/2020
 
 These are functions here, look here
-```{r}
+
+``` r
 #Functions
 
 is_both_na <- function(x,y) {
@@ -58,13 +53,12 @@ rescale <- function(x, na.rm=TRUE, plot=FALSE, ...) {
 }
 ```
 
-```{r}
+``` r
 x <- c(1, 2, NA, 3, NA)
 y <- c(NA, 3, NA, 3, 4)
 ```
 
-
-```{r}
+``` r
 # Start with a simple version of the problem
 df1 <- data.frame(IDs=c("gene1", "gene2", "gene3"),
  exp=c(2,1,1),
@@ -74,27 +68,60 @@ df2 <- data.frame(IDs=c("gene2", "gene4", "gene3", "gene5"),
  stringsAsFactors=FALSE)
 ```
 
-
-
-```{r}
+``` r
 x <- df1$IDs
 y <- df2$IDs
 
 intersect(x,y) #See where both share same 
+```
 
+    ## [1] "gene2" "gene3"
+
+``` r
 x %in% y #Takes all of x and looks at which elements of x are in y
+```
+
+    ## [1] FALSE  TRUE  TRUE
+
+``` r
 x #Way to subset
+```
+
+    ## [1] "gene1" "gene2" "gene3"
+
+``` r
 x[x %in% y] #Allows to show which elements they intersect at (specific); just taking the TRUE
+```
 
+    ## [1] "gene2" "gene3"
+
+``` r
 y
-y%in%x
-y[y%in%x] #Same but with respect to y
+```
 
+    ## [1] "gene2" "gene4" "gene3" "gene5"
+
+``` r
+y%in%x
+```
+
+    ## [1]  TRUE FALSE  TRUE FALSE
+
+``` r
+y[y%in%x] #Same but with respect to y
+```
+
+    ## [1] "gene2" "gene3"
+
+``` r
 cbind(x[x %in% y], y[y%in%x]) #Binds the vectors together; can use to make a function
 ```
 
+    ##      [,1]    [,2]   
+    ## [1,] "gene2" "gene2"
+    ## [2,] "gene3" "gene3"
 
-```{r}
+``` r
 # Making first snippet into first function
 gene_intersect <- function(x,y) {
   cbind(x[x %in% y], y[y%in%x])
@@ -102,8 +129,13 @@ gene_intersect <- function(x,y) {
 gene_intersect(x,y)
 ```
 
+    ##      [,1]    [,2]   
+    ## [1,] "gene2" "gene2"
+    ## [2,] "gene3" "gene3"
+
 # Lets edit to take input data frames
-```{r}
+
+``` r
 gene_intersect2 <- function(df1, df2) {
   cbind( df1[df1$IDs %in% df2$IDs,],
          df2[df2$IDs %in% df1$IDs, "exp"])
@@ -111,13 +143,19 @@ gene_intersect2 <- function(df1, df2) {
 gene_intersect2(df1, df2)
 ```
 
-```{r}
+    ##     IDs exp df2[df2$IDs %in% df1$IDs, "exp"]
+    ## 2 gene2   1                               -2
+    ## 3 gene3   1                                1
+
+``` r
 # Make sure everything is how we expect
 gene.colname="IDs"
 df1[, gene.colname]
 ```
 
-```{r}
+    ## [1] "gene1" "gene2" "gene3"
+
+``` r
 # Add df1[,gene.colname] to function
 gene_intersect3 <- function(df1, df2, gene.colname="IDs") {
   cbind( df1[ df1[,gene.colname] %in%
@@ -128,7 +166,11 @@ gene_intersect3 <- function(df1, df2, gene.colname="IDs") {
 gene_intersect3(df1, df2)
 ```
 
-```{r}
+    ##     IDs exp exp2
+    ## 2 gene2   1   -2
+    ## 3 gene3   1    1
+
+``` r
 # Simplify even more 
 gene_intersect4 <- function(df1, df2, gene.colname="IDs") {
   df1.name <- df1[,gene.colname]
@@ -143,7 +185,11 @@ gene_intersect4 <- function(df1, df2, gene.colname="IDs") {
 gene_intersect4(df1, df2)
 ```
 
-```{r}
+    ##     IDs exp exp2
+    ## 2 gene2   1   -2
+    ## 3 gene3   1    1
+
+``` r
 df1 <- data.frame(IDs=c("gene1", "gene2", "gene3"),
  exp=c(2,1,1),
  stringsAsFactors=FALSE)
@@ -153,20 +199,17 @@ df3 <- data.frame(IDs=c("gene2", "gene2", "gene5", "gene5"),
 gene_intersect4(df1, df3)
 ```
 
-```{r}
+    ## Warning in data.frame(..., check.names = FALSE): row names were found from a
+    ## short variable and have been discarded
+
+    ##     IDs exp exp2
+    ## 1 gene2   1   -2
+    ## 2 gene2   1   NA
+
+``` r
 merge(df1, df2, by="IDs")
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    ##     IDs exp.x exp.y
+    ## 1 gene2     1    -2
+    ## 2 gene3     1     1
