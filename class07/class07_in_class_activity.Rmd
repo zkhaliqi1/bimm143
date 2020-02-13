@@ -75,7 +75,6 @@ df2 <- data.frame(IDs=c("gene2", "gene4", "gene3", "gene5"),
 ```
 
 
-
 ```{r}
 x <- df1$IDs
 y <- df2$IDs
